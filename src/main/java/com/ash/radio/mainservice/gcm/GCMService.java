@@ -36,15 +36,31 @@ public class GCMService {
 	}
 
 	public void handleSongRequest(SongRequest songRequest) {
+		System.out.println(" sending GCM ");
+
 		List<User> users = userRepo.getAllUsers(1);
+		System.out.println("no of users : " + users.size());
 		List<String> gcmId = createGCMIdList(users);
 		multiCastMessage(gcmId, "message", songRequest.getSong());
+	}
+
+	public void handleMessageSend(com.ash.radio.mainservice.models.Message message) {
+		User sender = userRepo.getUser(message.getSender().getId());
+		
+		System.out.println("Senders role"+sender.getRole());
+		List<User> users = userRepo.getAllUsers(sender.getRole());
+		List<String> gcmId = createGCMIdList(users);
+		multiCastMessage(gcmId, "message", message.getMessage());
 	}
 
 	public List<String> createGCMIdList(List<User> users) {
 		List<String> list = new ArrayList<>();
 		for (User u : users) {
-			list.add(u.getGcmId());
+			System.out.println("user" + u.getId() + "gcm" + u.getGcmId());
+			if (u != null && u.getGcmId() != null && !"".equals(u.getGcmId().toString())) {
+				list.add(u.getGcmId());
+				System.out.println("user" + u.getId());
+			}
 		}
 		return list;
 	}

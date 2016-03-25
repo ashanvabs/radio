@@ -1,4 +1,5 @@
 com\ash\radio\mainservice\models\SongRequest.class
+com\ash\radio\mainservice\models\Message.class
 com\ash\radio\mainservice\repository\UserRepository.class
 com\ash\radio\mainservice\gcm\GCMService.class
 com\ash\radio\mainservice\models\User.class
@@ -7,5 +8,7 @@ HelloServlet\HelloServlet.class
 launch\Main.class
 com\ash\radio\mainservice\WebService\DeviceRegistration.class
 com\ash\radio\mainservice\WebService\Util.class
+com\ash\radio\mainservice\WebService\MessageWS.class
+com\ash\radio\mainservice\repository\MessageRepository.class
 com\ash\radio\mainservice\WebService\SongWS.class
 com\ash\radio\mainservice\repository\SongRequestRepository.class

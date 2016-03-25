@@ -38,6 +38,7 @@ public class SongWS {
 		System.out.println("Request a song");	
 		
 			SongRequest sr=new SongRequest(userId,song);
+			//sr.setAccept(false);
 			songReqRepo.addRequest(sr);
 			gcmService.handleSongRequest(sr);
 		return Response.status(200).entity("handle a song request").build();
@@ -54,9 +55,10 @@ public class SongWS {
 	    for(SongRequest sr : pending) {
 	    	
 	        jsonArray.add(Json.createObjectBuilder()
-	        	.add("requestId", sr.getId())	
-	            .add("requester", sr.getUser().getName())
-	            .add("requesttime", sr.getRequestTime().toString())
+	        	.add("requestId", sr.getId())
+	        	//.add("requesterId", sr.getUser().getId())
+	            //.add("requester", sr.getUser().getName())
+	            //.add("requesttime", sr.getRequestTime().toString())
 	        	.add("song", sr.getSong()));
 	    	
 	    }
@@ -69,9 +71,9 @@ public class SongWS {
 	@GET
 	@Path("/isacceptrequest")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response acceptRequests(@QueryParam("id") final int requestId,@QueryParam("isaccept") final boolean Isaccept ,InputStream input){
+	public Response acceptRequests(@QueryParam("id") final int requestId ,InputStream input){
 		
-		songReqRepo.IsAccept(requestId, Isaccept);
+		songReqRepo.IsAccept(requestId, true);
 		return Response.status(200).entity("Accept").build();
 	}
 	

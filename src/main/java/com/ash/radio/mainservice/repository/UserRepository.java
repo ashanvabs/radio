@@ -24,6 +24,23 @@ public class UserRepository {
 		return q.list().size()>0;
 	}
 	
+	public User getUser(int id) {
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		String query = "FROM User  u where u.id=" + id;
+
+		Query q = s.createQuery(query);
+		List srs = q.list();
+		if (srs.size() > 0){
+			User u=(User) q.list().get(0);
+			s.close();
+			return u;
+		}
+		else
+			s.close();
+			return null;
+
+	}
+	
 	public void updateUser(User user){
 		Session s=HibernateUtil.getSessionFactory().openSession();
 		Transaction t=s.beginTransaction();
@@ -42,5 +59,16 @@ public class UserRepository {
 		String q="FROM User as U WHERE U.role ="+role;
 		Query query=s.createQuery(q);
 		return query.list();		
+	}
+	public void updateRole(int userId,int role)
+	{
+		Session s=HibernateUtil.getSessionFactory().openSession();
+		Transaction t=s.beginTransaction();
+		User user= getUser(userId);
+		if(user!=null){
+			user.setRole(role);
+			s.update(user);
+			t.commit();
+		}
 	}
 }

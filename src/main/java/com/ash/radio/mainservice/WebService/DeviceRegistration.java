@@ -176,15 +176,25 @@ public class DeviceRegistration {
 	}
 	
 	@GET
+	@Path("/update")
+	public Response updateRole(@QueryParam("userid") final int id,@QueryParam("role") final int role,InputStream input){
+		
+		userRepo.updateRole(id,role);
+		
+		return Response.status(200).entity("updated").build();
+	}
+	
+	
+	@GET
 	@Path("/register")	
 	public Response registerUser(@QueryParam("deviceId") final String deviceId,@QueryParam("gcmId") final String gcmId,  InputStream input) {
-		
+		///todo: check whether device id is exist or not. if id is available then send the id of the user
 		User user=new User();
 		user.setDeviceId(deviceId);
 		user.setGcmId(gcmId);
-		userRepo.addUser(user);		
+		userRepo.addUser(user);
 		
-		return Response.status(200).entity("Success").build();
+		return Response.status(200).entity(user.getId()+"").build();
 		
 		/*System.out.println("Register user");
 		StringBuilder stringBuilder = new StringBuilder();

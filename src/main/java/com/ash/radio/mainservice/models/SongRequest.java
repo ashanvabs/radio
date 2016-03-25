@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,17 +21,24 @@ public class SongRequest implements java.io.Serializable {
 	public SongRequest() {
 
 	}
-
+	
+	
+	/***
+	 * create initial song request.
+	 * @param userId requester id
+	 * @param song name of the song
+	 */
+	
 	public SongRequest(int userId,String song) {
 		User user=new User();
 		user.setId(userId);
 		this.setUser(user);
 		this.setSong(song);
-		this.setAccept(true);
+		this.setAccept(false);
 	}
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	int id;
 
