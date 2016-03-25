@@ -12,6 +12,7 @@ import javax.print.attribute.standard.MediaTray;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -157,20 +158,16 @@ public class DeviceRegistration {
 		return Response.status(200).entity(output).build();
 	}
 
-	@POST
-	@Path("/Login")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response login(@QueryParam("Hello") final String hello, InputStream input) {
-		System.out.print("User loging");
-		JsonReader jsonReader = Json.createReader(input);
-		JsonObject jsonUser = jsonReader.readObject();
+	@GET
+	@Path("/login")	
+	public Response login(@QueryParam("gcmid") final String gcmId,@QueryParam("role") final int role, InputStream input) {
 		User user = new User();
-		user.setName(jsonUser.getString("name"));
-		user.setPassword(jsonUser.getString("password"));
+		System.out.println(gcmId +" - "+role);
+		user.setGcmId(gcmId);
+		user.setRole(role);
 
 		String IsLogged = userRepo.login(user) ? "true" : "false";
-		System.out.println(IsLogged);
-		System.out.println(hello);
+		
 		return Response.status(200).entity(IsLogged).build();
 
 	}
@@ -187,46 +184,19 @@ public class DeviceRegistration {
 	
 	@GET
 	@Path("/register")	
-	public Response registerUser(@QueryParam("deviceId") final String deviceId,@QueryParam("gcmId") final String gcmId,  InputStream input) {
-		///todo: check whether device id is exist or not. if id is available then send the id of the user
+	public Response registerUser(@QueryParam("gcmId") final String gcmId,@QueryParam("role") final int role,  InputStream input) {
 		User user=new User();
-		user.setDeviceId(deviceId);
+		//user.setDeviceId(deviceId);
 		user.setGcmId(gcmId);
-		userRepo.addUser(user);
+		user.setRole(role);
+		if(!userRepo.isGCMIDExist(user)){
+			userRepo.addUser(user);
 		
-		return Response.status(200).entity(user.getId()+"").build();
-		
-		/*System.out.println("Register user");
-		StringBuilder stringBuilder = new StringBuilder();
-		JsonReader jsonReader = Json.createReader(input);
-		JsonObject jsonObj = jsonReader.readObject();
-		System.out.println("user role :" + jsonObj.getString("user_role"));
-		String regId=jsonObj.getString("registration_id");
-		androidTargets.add(regId);
-		System.out.println("user deice registration id :" + regId);
-		// JsonObject jsonData=jsonObj.getJsonObject("data");
-
-		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-		stringBuilder = new StringBuilder();
-
-		String line = null;
-		try {
-
-			while ((line = reader.readLine()) != null) {
-				stringBuilder.append(line + "\n");
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return Response.status(200).entity(user.getId()+"").build();
 		}
-
-		System.out.println("Data Received: " + stringBuilder.toString());
-*/
-		// return HTTP response 200 in case of success
-		
-		
-		
-		
+		else{
+			return Response.status(200).entity("You are already registered.").build();
+		}		
 		
 	}
 

@@ -12,11 +12,11 @@
         
         <!-- <property name="hibernate.connection.username">kprqwahxzekgnw</property>
         <property name="hibernate.connection.password">a8dYhY3iP2ZMXCCsLb5hjNJaJk</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://ec2-107-21-229-87.compute-1.amazonaws.com:5432/dcp3q5q6g3a8b4</property>
-         -->
+        <property name="hibernate.connection.url">jdbc:postgresql://ec2-107-21-229-87.compute-1.amazonaws.com:5432/dcp3q5q6g3a8b4</property> -->
+        
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">root</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/radio</property>
         
         
         <!-- <property name="hibernate.connection.driver_class">com.ddtek.jdbc.sqlserver.SQLServerDriver</property> -->

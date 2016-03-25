@@ -16,11 +16,18 @@ public class UserRepository {
 	}
 	public boolean login(User user){
 		Session s=HibernateUtil.getSessionFactory().openSession();
-		String query="SELECT * FROM User U WHERE U.name =:name AND U.password=:pswrd";
-		
+		String query="SELECT * FROM Users U WHERE U.gcmid =:gcmId AND U.role=:role";
 		Query q=s.createSQLQuery(query);
-		q.setParameter("name", user.getName());
-		q.setParameter("pswrd", user.getPassword());
+		q.setParameter("gcmId", user.getGcmId());
+		q.setParameter("role", user.getRole());
+		return q.list().size()>0;
+	}
+	
+	public boolean isGCMIDExist(User user){
+		Session s=HibernateUtil.getSessionFactory().openSession();
+		String query="SELECT * FROM Users U WHERE U.gcmid =:gcmId";
+		Query q=s.createSQLQuery(query);
+		q.setParameter("gcmId", user.getGcmId());		
 		return q.list().size()>0;
 	}
 	
